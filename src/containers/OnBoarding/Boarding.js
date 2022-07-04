@@ -21,7 +21,9 @@ const Boarding = () => {
             <Text style={styles.subtext}>
               Get your groceries in as fast as one hour
             </Text>
-            <Button title="Get Started" onPress={() => navigation.navigate('SignIn')}/>
+            {/* <Button title="Get Started" onPress={() => navigation.navigate('SignIn')}/> */}
+            <Button title="Get Started" onPress={() => navigation.navigate('HomeTabs')}/>
+
           </View>
         </ImageBackground>
       </View>

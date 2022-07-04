@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import {
   FlatList,
   Image,
@@ -9,57 +9,75 @@ import {
 } from 'react-native';
 import color from '../../common/color';
 import {useNavigation} from '@react-navigation/native';
+import {fetchCategory} from '../../services/home';
 
 const DATA = [
   {
     id: '1',
-    imgURL: require('../../assets/images/vegetables.png'),
-    productName: 'Fruits & Vegitables',
+    image: require('../../assets/images/vegetables.png'),
+    name: 'Fruits & Vegitables',
   },
   {
     id: '2',
-    imgURL: require('../../assets/images/oil-masala.png'),
-    productName: 'Oil & Masala',
+    image: require('../../assets/images/oil-masala.png'),
+    name: 'Oil & Masala',
   },
   {
     id: '3',
-    imgURL: require('../../assets/images/Eggs-meat-fish.png'),
-    productName: 'Eggs, Meat & Fish',
+    image: require('../../assets/images/Eggs-meat-fish.png'),
+    name: 'Eggs, Meat & Fish',
   },
   {
     id: '4',
-    imgURL: require('../../assets/images/home-cleaning.png'),
-    productName: 'Cleaning & Household',
+    image: require('../../assets/images/home-cleaning.png'),
+    name: 'Cleaning & Household',
   },
   {
     id: '5',
-    imgURL: require('../../assets/images/beauty-hygine.png'),
-    productName: 'Beauty & Hygene',
+    image: require('../../assets/images/beauty-hygine.png'),
+    name: 'Beauty & Hygene',
   },
   {
     id: '6',
-    imgURL: require('../../assets/images/snacks-branded-foods.png'),
-    productName: 'Snacks & Packed Foods',
+    image: require('../../assets/images/snacks-branded-foods.png'),
+    name: 'Snacks & Packed Foods',
   },
   {
     id: '7',
-    imgURL: require('../../assets/images/clod-drink-juices.png'),
-    productName: 'Bevrages',
+    image: require('../../assets/images/clod-drink-juices.png'),
+    name: 'Bevrages',
   },
   {
     id: '8',
-    imgURL: require('../../assets/images/bakery-cake-dairy.png'),
-    productName: 'Bakery & Dairy',
+    image: require('../../assets/images/bakery-cake-dairy.png'),
+    name: 'Bakery & Dairy',
   },
   {
     id: '9',
-    imgURL: require('../../assets/images/foodgrains.png'),
-    productName: 'Foodgrains',
+    image: require('../../assets/images/foodgrains.png'),
+    name: 'Foodgrains',
   },
 ];
 
 const Categories = () => {
+  const [category, setCategory] = useState();
   const navigation = useNavigation();
+
+  const getCategories = async () => {
+    try {
+      const res = await fetchCategory();
+      console.log("test",res);
+      if (res.status) {
+        setCategory(res.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   return (
     <>
@@ -69,13 +87,15 @@ const Categories = () => {
       </View>
       <View style={{marginHorizontal: 16}}>
         <FlatList
-          data={DATA}
+          data={category}
           renderItem={({item}) => (
             <TouchableOpacity
-              onPress={() => navigation.navigate('Categories')}
+              onPress={() => navigation.navigate('Categories', {
+                categoryUid: item.uid,
+              })}
               style={styles.productContainer}>
-              <Image source={item.imgURL} style={styles.image} />
-              <Text style={styles.name}>{item.productName}</Text>
+              <Image source={item.image} style={styles.image} />
+              <Text style={styles.name}>{item.name}</Text>
             </TouchableOpacity>
           )}
           numColumns={3}

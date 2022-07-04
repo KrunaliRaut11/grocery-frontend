@@ -21,7 +21,7 @@ const AddressMain = () => {
               styles.row,
               {borderBottomWidth: 1, borderBottomColor: '#E2E2E2'},
             ]}>
-            <View style={{width: '70%'}}>
+            <View style={{width:'70%'}}>
               <Text
                 style={[
                   styles.addressText,
